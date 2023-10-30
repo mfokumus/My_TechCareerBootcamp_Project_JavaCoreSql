@@ -1,4 +1,9 @@
 package com.mfokumus.javase.dto;
 
-public class RegisterDto {
+//Register
+public class RegisterDto extends BaseDto {
+    @Override
+    public String nowDateAbstract() {
+        return null;
+    }
 }
