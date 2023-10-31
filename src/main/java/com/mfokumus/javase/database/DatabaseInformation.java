@@ -3,6 +3,7 @@ package com.mfokumus.javase.database;
 // Database Information
 abstract public class DatabaseInformation {
 
+    // Variable
     protected String url;
     protected String user;
     protected String password;
@@ -11,6 +12,10 @@ abstract public class DatabaseInformation {
     // Constructor (Parametresiz)
     public DatabaseInformation() {
         // Default Mysql
+        user = "root";
+        password = "root";
+        url = "jdbc:mysql://localhost:3306/cars";
+        forNameData = "com.mysql.cj.jdbc.Driver";
     }
 
     // Constructor (Parametreli)
