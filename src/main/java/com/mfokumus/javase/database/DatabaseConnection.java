@@ -29,7 +29,6 @@ public class DatabaseConnection extends DatabaseInformation{
         }
     } // end constructor
 
-
     // Singleton Design Pattern (Method)
     public static DatabaseConnection getInstance(){
         try {

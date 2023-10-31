@@ -52,6 +52,7 @@ abstract public class DatabaseInformation {
     }
 
     public String getForNameData() {
+
         return forNameData;
     }
 
