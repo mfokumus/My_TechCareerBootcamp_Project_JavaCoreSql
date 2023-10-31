@@ -59,4 +59,6 @@ abstract public class BaseDto implements Serializable {
     public void setSystemCreatedDate(Date systemCreatedDate) {
         this.systemCreatedDate = systemCreatedDate;
     }
+
 }
+
