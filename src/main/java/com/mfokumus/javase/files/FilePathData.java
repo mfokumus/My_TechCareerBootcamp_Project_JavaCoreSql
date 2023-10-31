@@ -33,6 +33,7 @@ public class FilePathData { // File yapısına veriler eklemek istiyorsak FilePa
                 System.out.println("Permission: Okunabilinir mi? "+file.canRead()+" yazılabilinir mi? "+file.canWrite()+" Calistirilabilinir mi? "+file.canExecute());
                 //toString
                 System.out.println("ID: "+this.id+" URL: "+this.url+" Hash Code: "+file.hashCode());
+
                 secretFileWriter(); //Writer
                 secretFileReader(); //Reader
                 fileIsDelete();//Delete
@@ -70,7 +71,7 @@ public class FilePathData { // File yapısına veriler eklemek istiyorsak FilePa
 
     //File Writer
     private void secretFileWriter(){
-        try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(this.url, false))){
+        try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(this.url, true))){
             String data = "[ "+ localeDateTime()+" ]"+ " secret key: ssh-keygen -t rsa -b 4096 -C 'metefurkanokumus@gmail.com'" ;
             bufferedWriter.write(data);
             bufferedWriter.flush();// hoca güzel eklesin dedi o yüzen bi de flush yapsın
