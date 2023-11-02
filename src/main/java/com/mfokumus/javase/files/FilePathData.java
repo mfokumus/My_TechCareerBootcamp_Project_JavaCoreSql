@@ -96,17 +96,96 @@ public class FilePathData { // File yapısına veriler eklemek istiyorsak FilePa
         }
     } // end reader
 
-    // File Delete
-    public void fileIsDelete(){
-        Scanner klavye = new Scanner(System.in);
-        char chooise;
-        System.out.println(pathFileName+" Dosyayi silmek ister misiniz ? E / H");
-        chooise = klavye.nextLine().charAt(0);
-        if(chooise == 'E' || chooise == 'e'){
-            file.exists();
-        }else{
-            System.out.println(pathFileName + " Silinmedi");
+    // File Kendim yazacağım.
+    // Rolles: (admin ve Writer yetkisi var)
+    public String specialFileCreate(String fileName){
+        this.id = UUID.randomUUID().toString();
+        this.systemCreatedDate = new Date(System.currentTimeMillis());
+        pathFileName = "\\"+fileName.concat(".txt");
+        pathDirectoryName = FilePathUrl.MY_FILE_PATH_URL;
+        url = pathDirectoryName.concat(pathFileName);
+        this.file = new File(url);
+        try {
+            // Böyle bir dosya var mı?
+            if (file.createNewFile()) {
+                System.out.println(pathFileName + "Böyle bir dosya yoktur ve oluşturuldu.");
+            } else {
+                String fileNameData = pathFileName + "Böyle bir dosya var tekrardan oluşturulmadı.";
+                System.out.println(fileNameData);
+                return  fileNameData;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    }// end delete
+        return url+ "olusturuldu";
+    }
+
+    // Dosya Listele
+    // Rolles: admin(+) writer(+)
+    public void fileList(){
+        File fileList=new File(FilePathUrl.MY_FILE_PATH_URL);
+        for(File temp: fileList.listFiles()   ){
+            System.out.println(temp.getName());
+        }
+    }
+
+    // File Delete
+    // Rolles: admin(+)
+    public void fileIsDelete(){
+        Scanner klavye=new Scanner(System.in);
+        //dosya isimleri göster
+        fileList();
+        System.out.println("Silmek istediğniiz dosya adını yazınız");
+        String fileName=klavye.nextLine().concat(".txt");
+        pathDirectoryName = FilePathUrl.MY_FILE_PATH_URL;
+        url = pathDirectoryName.concat("\\").concat(fileName);
+        System.out.println("Dosya uzantısı"+ url);
+
+        char chooise;
+        System.out.println(fileName+" bu dosyayı silmek ister misiniz ? E / H");
+        chooise=klavye.nextLine().charAt(0);
+        if(chooise=='E' || chooise=='e'){
+            try {
+                File fileDelete=new File(url);
+                //exists: boyle bir dosya var mı yokmu ?
+                if(fileDelete.exists()){
+                    fileDelete.delete();
+                    System.out.println("Dosyanız silindi");
+                }else{
+                    System.out.println("Olmayan dosyayı silememem!!!");
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }else{
+            System.out.println(pathFileName+ "Silinmedi");
+        }
+    }
+
+    // Informartion
+    // Rolles: admin(+) writer(+)
+    public void fileProperties(){
+        System.out.println("Dosya Özellikler");
+        Scanner klavye=new Scanner(System.in);
+        //dosya isimleri göster
+        fileList();
+        System.out.println("Özelliklerine bakmak istediğiniz  dosya adını yazınız");
+        String fileName=klavye.nextLine().concat(".txt");
+        pathDirectoryName = FilePathUrl.MY_FILE_PATH_URL;
+        url = pathDirectoryName.concat("\\").concat(fileName);
+        System.out.println("Dosya uzantısı: "+ url);
+        // File Information
+        File file1=new File(url);
+        System.out.println("PATH: "+file1.getPath());
+        System.out.println("PARENT: "+file1.getParent());
+        System.out.println("TOTAL SPACE: "+file1.getTotalSpace());
+        System.out.println("FREE SPACE: "+file1.getFreeSpace());
+        System.out.println("READ: "+file1.canRead());
+        System.out.println("WRITE: "+file1.canWrite());
+        System.out.println("EXECUTE: "+file1.canExecute());
+        System.out.println("DİZİN MİDİR ?: "+file1.isDirectory());
+        System.out.println("DOSYA MIDIR ?: "+file1.isFile());
+        System.out.println("DOSYA GİZLİ MİDİR ?: "+file1.isHidden());
+    }
 
 }// end class FilePathData

@@ -55,8 +55,9 @@ public class RegisterDto extends BaseDto implements Serializable {
         return uNickName;
     }
 
+    // Eğer Kullanıcının kelimelrde başında ve sonunda boşluklar varsa bunu engelememiz gerekiyor.
     public void setuNickName(String uNickName) {
-        this.uNickName = uNickName;
+        this.uNickName = uNickName.trim();
     }
 
     public String getuEmailAddress() {
@@ -64,7 +65,7 @@ public class RegisterDto extends BaseDto implements Serializable {
     }
 
     public void setuEmailAddress(String uEmailAddress) {
-        this.uEmailAddress = uEmailAddress;
+        this.uEmailAddress = uEmailAddress.trim();
     }
 
     public String getuPassword() {
@@ -72,7 +73,7 @@ public class RegisterDto extends BaseDto implements Serializable {
     }
 
     public void setuPassword(String uPassword) {
-        this.uPassword = uPassword;
+        this.uPassword = uPassword.trim();
     }
 
     public Long getRemainingNumber() {
