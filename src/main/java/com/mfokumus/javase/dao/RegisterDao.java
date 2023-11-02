@@ -1,6 +1,7 @@
 package com.mfokumus.javase.dao;
 
 import com.mfokumus.javase.dto.RegisterDto;
+import com.mfokumus.javase.roles.ERoles;
 
 import java.io.Serializable;
 import java.sql.Connection;
@@ -8,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /*
    Transaction: Create, Delete, Update
@@ -17,14 +19,71 @@ import java.util.ArrayList;
 */
 
 public class RegisterDao implements IDaoGenerics<RegisterDto> , Serializable {
+
+    // SPEED DATA
     @Override
     public String speedData(Long id) {
-        return null;
+        for (int i = 1 ; i<= id ; i++){
+            try(Connection connection = getInterfaceConnection()){
+                // Manipulation : executeUpdate() [create, delete, update]
+                // Sorgularda   : executeQuery()  [list, find, update]
+                //TRANSACTION YAPISINI YAZALIM
+                connection.setAutoCommit(false); // Default:true
+                String sql ="INSERT INTO `cars`.`register` (`nick_name`,`email_address`,`password`,`roles`,`remaining_number`,`is_passive`)\n" +
+                        " VALUES (?, ?, ?,?,?,?)";
+                String rnd = UUID.randomUUID().toString();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1,"nickname() "+rnd);
+                preparedStatement.setString(2,"emailAddress() "+rnd);
+                preparedStatement.setString(3,"password() "+rnd);
+                preparedStatement.setString(4, ERoles.USER.getValue());
+                preparedStatement.setInt(5,5);
+                preparedStatement.setBoolean(6, true);
+                // executeUpdate: create, delete, update için kullanılır.
+                int rowsEffected = preparedStatement.executeUpdate();
+                // eğer ekleme yapılmamışsa -1 değerini döner
+                if (rowsEffected > 0) {
+                    System.out.println(RegisterDao.class+ " Basarili Ekleme Tamamdir.");
+                    connection.commit();
+                }else {
+                    System.err.println(RegisterDao.class+ "!!! Basarisiz Ekleme Tamamdir");
+                    connection.rollback();
+                }
+            }catch (SQLException sql){
+                sql.printStackTrace();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        System.out.println(id+" tane veri eklendi");
+        return id + " tane veri eklendi";
     }
-
+    // ALL DELETE
     @Override
     public String allDelete() {
-        return null;
+        try(Connection connection = getInterfaceConnection()){
+            // executeUpdate() [create, delete, update]
+            // Sorgularda   : executeQuery()  [list, find, update]
+            //TRANSACTION YAPISINI YAZALIM
+            connection.setAutoCommit(false); // Default:true
+            String sql ="DELETE FROM `cars`.`register`";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            // executeUpdate: create, delete, update için kullanılır.
+            int rowsEffected = preparedStatement.executeUpdate();
+            // eğer güncelleme yapılmamışsa -1 değerini döner
+            if (rowsEffected > 0) {
+                System.out.println(RegisterDao.class+ " Basarili Butun Veriler Silme Tamamdir.");
+                connection.commit();
+            }else {
+                System.err.println(RegisterDao.class+ "!!! Basarisiz Butun Veriler Silme Tamamdir");
+                connection.rollback();
+            }
+        }catch (SQLException sql){
+            sql.printStackTrace();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return list().size() + " tane veri silindi";
     }
 
     ///////////////////////////////////////////////////////
@@ -133,6 +192,34 @@ public class RegisterDao implements IDaoGenerics<RegisterDto> , Serializable {
     // LIST
     @Override
     public ArrayList<RegisterDto> list() {
+        ArrayList <RegisterDto> list = new ArrayList<>();
+        RegisterDto registerDto;
+        try(Connection connection = getInterfaceConnection()){
+            //DİKKAT: email_address String olduğu için tırnak içinde yazıyoruz   örneğin: email="weqwe@gmail.com"
+            String sql ="SELECT * FROM cars.register";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            // executeUpdate() [create, delete, update]
+            // Sorgularda   : executeQuery()  [list, find, update]
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                // nick_name, email_address, password, roles, remaining_number, is_passive
+                registerDto = new RegisterDto();
+                registerDto.setId(resultSet.getLong("id"));
+                registerDto.setuNickName(resultSet.getString("nick_name"));
+                registerDto.setuEmailAddress(resultSet.getString("email_address"));
+                registerDto.setuPassword(resultSet.getString("password"));
+                registerDto.setRolles(resultSet.getString("roles"));
+                registerDto.setRemainingNumber(resultSet.getInt("remaining_number"));
+                registerDto.setPassive(resultSet.getBoolean("is_passive"));
+                registerDto.setSystemCreatedDate(resultSet.getDate("system_created_date"));
+                list.add(registerDto);
+            }
+            return list; // eğer başarılı ise return registerDto
+        }catch (SQLException sql){
+            sql.printStackTrace();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -144,8 +231,9 @@ public class RegisterDao implements IDaoGenerics<RegisterDto> , Serializable {
             // Sorgularda   : executeQuery()  [list, find, update]
             //TRANSACTION YAPISINI YAZALIM
             connection.setAutoCommit(false); // Default:true
-            String sql ="UPDATE `cars`.`register` SET `nick_name`=?, `email_address`=?, `password`=?, `roles`=?, `remaining_number`=?, `is_passive`=?" +
-                    " WHERE `id` = ?;";
+            String sql ="UPDATE `cars`.`register` SET `nick_name`=?, `email_address`=?, `password`=?, `roles`=?, " +
+                    "`remaining_number`=?, `is_passive`=?" +
+                    " WHERE `id` =?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,registerDto.getuNickName());
             preparedStatement.setString(2,registerDto.getuEmailAddress());
@@ -181,7 +269,7 @@ public class RegisterDao implements IDaoGenerics<RegisterDto> , Serializable {
             // Sorgularda   : executeQuery()  [list, find, update]
             //TRANSACTION YAPISINI YAZALIM
             connection.setAutoCommit(false); // Default:true
-            String sql ="DELETE FROM `cars`.`register` WHERE (`id` = ?);";
+            String sql ="DELETE FROM `cars`.`register` WHERE `id` = ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1,registerDto.getId());
             // executeUpdate: create, delete, update için kullanılır.

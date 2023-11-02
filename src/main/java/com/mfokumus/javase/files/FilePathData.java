@@ -20,10 +20,10 @@ public class FilePathData { // File yapısına veriler eklemek istiyorsak FilePa
     public FilePathData() {
         this.id= UUID.randomUUID().toString();
         this.systemCreatedDate = new Date(System.currentTimeMillis());
-        pathFileName = "\\secretkey.txt";
+        pathFileName = "\\log.txt";
         // C:\io\techcareer\full_3
         pathDirectoryName = FilePathUrl.MY_FILE_PATH_URL;
-        // "C:\\io\\techcareer\\full_3\\secretkey.txt"
+        // "C:\\io\\techcareer\\full_3\\log.txt"
         url = pathDirectoryName.concat(pathFileName);
         file = new File(url);
         try{
