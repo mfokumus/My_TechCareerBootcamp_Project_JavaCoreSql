@@ -87,6 +87,7 @@ public class RegisterDao implements IDaoGenerics<RegisterDto> , Serializable {
                 registerDto.setRolles(resultSet.getString("roles"));
                 registerDto.setRemainingNumber(resultSet.getInt("remaining_number"));
                 registerDto.setPassive(resultSet.getBoolean("is_passive"));
+                registerDto.setSystemCreatedDate(resultSet.getDate("system_created_date"));
             }
             return registerDto; // eğer başarılı ise return registerDto
         }catch (SQLException sql){
