@@ -52,11 +52,10 @@ abstract public class DatabaseInformation {
     }
 
     public String getForNameData() {
-
         return forNameData;
     }
 
     public void setForNameData(String forNameData) {
         this.forNameData = forNameData;
     }
-}
+}// end class DatabaseInformation

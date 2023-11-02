@@ -109,4 +109,4 @@ public class FilePathData { // File yapısına veriler eklemek istiyorsak FilePa
         }
     }// end delete
 
-}// end class
+}// end class FilePathData

@@ -22,4 +22,4 @@ public enum ERoles {
     public String getValue() {
         return value;
     }
-}
+}// end ERoles

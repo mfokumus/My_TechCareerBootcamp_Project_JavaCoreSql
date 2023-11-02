@@ -31,6 +31,7 @@ public class RegisterDto extends BaseDto implements Serializable {
         this.rolles = rolles;
     }
 
+    // toString
     @Override
     public String toString() {
         return "RegisterDto{" +
@@ -105,4 +106,4 @@ public class RegisterDto extends BaseDto implements Serializable {
     public void setCounter(int counter) {
         this.counter = counter;
     }
-}
+}// end class RegisterDto

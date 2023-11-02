@@ -19,7 +19,7 @@ abstract public class BaseDto implements Serializable {
         this.systemCreatedDate = new Date(System.currentTimeMillis()); //1 ocak 1970 yılından bu yana geçen milisaniye
     }
 
-    //constructor (Parametreli)
+    // Constructor (Parametreli)
     public BaseDto(Long id, Date systemCreatedDate) {
         this.id = id;
         this.systemCreatedDate = systemCreatedDate;
@@ -59,6 +59,5 @@ abstract public class BaseDto implements Serializable {
     public void setSystemCreatedDate(Date systemCreatedDate) {
         this.systemCreatedDate = systemCreatedDate;
     }
-
-}
+} //end class BaseDto
 

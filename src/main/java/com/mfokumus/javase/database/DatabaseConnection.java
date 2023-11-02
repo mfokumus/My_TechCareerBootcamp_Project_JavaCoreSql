@@ -58,4 +58,4 @@ public class DatabaseConnection extends DatabaseInformation{
         DatabaseConnection databaseConnection = new DatabaseConnection();
     }
 
-}// end Class
+}// end Class DatabaseConnection
