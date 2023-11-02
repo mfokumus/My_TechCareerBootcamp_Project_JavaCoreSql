@@ -34,9 +34,9 @@ public class FilePathData { // File yapısına veriler eklemek istiyorsak FilePa
                 //toString
                 System.out.println("ID: "+this.id+" URL: "+this.url+" Hash Code: "+file.hashCode());
 
-                secretFileWriter(); //Writer
-                secretFileReader(); //Reader
-                fileIsDelete();//Delete
+//                logFileWriter(); //Writer
+//                logFileReader(); //Reader
+//                fileIsDelete();//Delete
 
             }else{
                 String fileName = pathFileName+ "Boyle bir dosya var. Tekrar olusturulmadi.";
@@ -70,9 +70,9 @@ public class FilePathData { // File yapısına veriler eklemek istiyorsak FilePa
     }
 
     //File Writer
-    private void secretFileWriter(){
+    public void logFileWriter(String email, String password){
         try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(this.url, true))){
-            String data = "[ "+ localeDateTime()+" ]"+ " secret key: ssh-keygen -t rsa -b 4096 -C 'metefurkanokumus@gmail.com'" ;
+            String data = "[ "+ localeDateTime()+" ] "+email+" "+password;
             bufferedWriter.write(data);
             bufferedWriter.flush();// hoca güzel eklesin dedi o yüzen bi de flush yapsın
         }catch (Exception e){
@@ -81,7 +81,7 @@ public class FilePathData { // File yapısına veriler eklemek istiyorsak FilePa
     } // end Writer
 
     //File Reader
-    private void secretFileReader(){
+    public void logFileReader(){
         String rows; // okunan satır olacak
         StringBuilder stringBuilder = new StringBuilder(); // stringleri toplam olarak gösteren yapı
         String buildToString;
@@ -97,7 +97,7 @@ public class FilePathData { // File yapısına veriler eklemek istiyorsak FilePa
     } // end reader
 
     // File Delete
-    private void fileIsDelete(){
+    public void fileIsDelete(){
         Scanner klavye = new Scanner(System.in);
         char chooise;
         System.out.println(pathFileName+" Dosyayi silmek ister misiniz ? E / H");

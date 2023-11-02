@@ -1,6 +1,7 @@
 package com.mfokumus.javase.dao;
 
 import com.mfokumus.javase.database.DatabaseConnection;
+import com.mfokumus.javase.dto.RegisterDto;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -28,6 +29,9 @@ public interface IDaoGenerics <T> {
 
     // UPDATE
     public T update(Long id, T t); // update için kullanıcıdan bir id ve objenin kendisini alalım.
+
+    // UPDATE (REMAING NUMBER)
+    public RegisterDto updateRemaing(Long id, T t);
 
     // DELETE
     public T deleteById(T t); //

@@ -14,7 +14,7 @@ public class RegisterController implements IDaoGenerics<RegisterDto> {
     private RegisterDao registerDao = new RegisterDao();
 
     ////////////////////////////////////////////////////////
-    
+
     // SPEED DATA
     @Override
     public String speedData(Long id) {
@@ -55,6 +55,11 @@ public class RegisterController implements IDaoGenerics<RegisterDto> {
     @Override
     public RegisterDto update(Long id, RegisterDto registerDto) {
         return registerDao.update(id,registerDto);
+    }
+
+    @Override
+    public RegisterDto updateRemaing(Long id, RegisterDto registerDto) {
+        return registerDao.updateRemaing(id, registerDto);
     }
 
     // DELETE BY ID
