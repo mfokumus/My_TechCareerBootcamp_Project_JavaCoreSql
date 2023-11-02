@@ -2,6 +2,7 @@ package com.mfokumus.javase.dao;
 
 import com.mfokumus.javase.dto.RegisterDto;
 import com.mfokumus.javase.roles.ERoles;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.Serializable;
 import java.sql.Connection;
@@ -86,6 +87,31 @@ public class RegisterDao implements IDaoGenerics<RegisterDto> , Serializable {
         return list().size() + " tane veri silindi";
     }
 
+    ////////////////////////////////////////////////////////
+
+    // Sifreleme olustur (Encoder)
+    public String generatebCryptPasswordEncoder(String value){
+        // Sifrelemeyi olusturmak
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String rawPassword = bCryptPasswordEncoder.encode(value);
+        return rawPassword;
+    }
+
+    // Sifre karsilastir (Match)
+    public Boolean matchbCryptPassword(String fistValue, String rawPassword){
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        boolean isMatch=bCryptPasswordEncoder.matches(fistValue,rawPassword);
+        return isMatch;
+    }
+
+    public static void main(String[] args) {
+        RegisterDao registerDao=new RegisterDao();
+        String firstValue="123456";
+        String rawPassword=registerDao.generatebCryptPasswordEncoder(firstValue);
+        boolean result=registerDao.matchbCryptPassword(firstValue,rawPassword);
+        System.out.println(result);
+    }
+
     ///////////////////////////////////////////////////////
     // CREATE
     //INSERT INTO `cars`.`register` (`nick_name`,`email_address`,`password`,`roles`,`remaining_number`,`is_passive`)
@@ -103,7 +129,8 @@ public class RegisterDao implements IDaoGenerics<RegisterDto> , Serializable {
             preparedStatement.setString(1,registerDto.getuNickName());
             preparedStatement.setString(2,registerDto.getuEmailAddress());
 
-            preparedStatement.setString(3,registerDto.getuPassword());
+            //registerDto.setuPassword(resultSet.getString("password"));
+            preparedStatement.setString(3, generatebCryptPasswordEncoder(registerDto.getuPassword()));
 
             preparedStatement.setString(4,registerDto.getRolles());
             preparedStatement.setLong(5,registerDto.getRemainingNumber());

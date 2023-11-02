@@ -83,12 +83,12 @@ public class RegisterLoginServices {
 
             // Database kaydedilmis decode edilmis sifre karsilastirmak
             RegisterDao registerDao=new RegisterDao();
-            String fistValue=uPassword;
-            String rawPassword=registerDao.generatebCryptPasswordEncoder(fistValue);
-            boolean result=registerDao.matchbCryptPassword(fistValue,registerEmailFind.getuPassword());
+            String firstValue=uPassword;
+            String rawPassword=registerDao.generatebCryptPasswordEncoder(firstValue);
+            boolean result=registerDao.matchbCryptPassword(firstValue,registerEmailFind.getuPassword());
 
             // Eğer kullanıcı varsa sisteme giriş yapsın    uPassword.equals(registerEmailFind.getuPassword()
-            if (uEmailAddress.equals(registerEmailFind.getuEmailAddress()) && registerDao.matchbCryptPassword(fistValue,registerEmailFind.getuPassword()) ) {
+            if (uEmailAddress.equals(registerEmailFind.getuEmailAddress()) && registerDao.matchbCryptPassword(firstValue,registerEmailFind.getuPassword()) ) {
                 adminProcess(registerEmailFind);
             } else {
                 // Kullanıcının kalan hakkı
